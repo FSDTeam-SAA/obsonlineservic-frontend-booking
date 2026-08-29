@@ -1,0 +1,43 @@
+import React from "react";
+
+export function HolidayParkCardSkeleton() {
+  return (
+    <div className="h-full border-none shadow-[0_4px_20px_rgba(0,0,0,0.04)] rounded-sm overflow-hidden bg-white flex flex-col justify-between animate-pulse">
+      <div>
+        <div className="relative h-[210px] w-full bg-slate-200" />
+        <div className="p-5 pb-3 space-y-3">
+          <div className="h-5 bg-slate-200 rounded w-3/4" />
+          <div className="h-4 bg-slate-200 rounded w-1/2" />
+          <div className="h-3 bg-slate-200 rounded w-full" />
+          <div className="h-3 bg-slate-200 rounded w-5/6" />
+          <div className="flex justify-between pt-4 pb-2 border-b border-slate-100">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="w-6 h-6 rounded-full bg-slate-200" />
+            ))}
+          </div>
+          <div className="flex justify-between pt-3">
+            <div className="h-6 bg-slate-200 rounded w-20" />
+            <div className="h-4 bg-slate-200 rounded w-28" />
+          </div>
+        </div>
+      </div>
+      <div className="p-5 pt-0">
+        <div className="h-10 bg-slate-200 rounded w-full" />
+      </div>
+    </div>
+  );
+}
+
+export function HolidayParkDetailSkeleton() {
+  return (
+    <div className="w-full animate-pulse space-y-8 p-6">
+      <div className="h-[400px] bg-slate-200 rounded-lg w-full" />
+      <div className="space-y-4 max-w-4xl mx-auto">
+        <div className="h-8 bg-slate-200 rounded w-1/3" />
+        <div className="h-4 bg-slate-200 rounded w-1/4" />
+        <div className="h-4 bg-slate-200 rounded w-full" />
+        <div className="h-4 bg-slate-200 rounded w-5/6" />
+      </div>
+    </div>
+  );
+}
