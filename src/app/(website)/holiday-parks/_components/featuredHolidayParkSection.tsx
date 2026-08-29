@@ -14,6 +14,7 @@ import {
 import { getHolidayParks } from "@/features/holiday-parks/api/holiday-parks.api";
 import { HolidayPark } from "@/features/holiday-parks/types";
 import { HolidayParkCardSkeleton } from "@/features/holiday-parks/components/HolidayParkSkeleton";
+import { getValidImageUrl } from "@/lib/utils";
 
 const filterCountries = [
   "All Countries",
@@ -125,10 +126,7 @@ export default function FeaturedHolidayParkSection() {
             ) : (
               parks.map((item) => {
                 const parkId = item._id;
-                const imageSrc =
-                  item.coverImage ||
-                  item.heroBanner ||
-                  "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=600";
+                const imageSrc = getValidImageUrl(item.coverImage || item.heroBanner);
                 const locationText =
                   [item.location?.city, item.location?.country]
                     .filter(Boolean)

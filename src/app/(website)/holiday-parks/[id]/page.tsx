@@ -10,6 +10,7 @@ import ResortAmenitiesSection from "./_components/ResortAmenitiesSection";
 import { getHolidayParkById } from "@/features/holiday-parks/api/holiday-parks.api";
 import { HolidayPark } from "@/features/holiday-parks/types";
 import { HolidayParkDetailSkeleton } from "@/features/holiday-parks/components/HolidayParkSkeleton";
+import { getValidImageUrl } from "@/lib/utils";
 
 export default function HolidayParkDetailPage({
   params,
@@ -76,7 +77,7 @@ export default function HolidayParkDetailPage({
     startingPrice: `From ${park.currency || "€"}${park.startingPrice || 129} /night`,
     primaryButtonText: "Book Your Stay",
     secondaryButtonText: "View Holiday Homes",
-    backgroundImage: park.heroBanner || park.coverImage || "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1920",
+    backgroundImage: getValidImageUrl(park.heroBanner || park.coverImage, "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1920"),
   };
 
   // Construct sanctuary section data
@@ -92,7 +93,7 @@ export default function HolidayParkDetailPage({
       tagline: park.ecoBadge?.tagline || "CERTIFIED ECO-PARK",
       title: park.ecoBadge?.title || "100% Sustainable Stay",
     },
-    image: park.coverImage || park.heroBanner || "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=1200",
+    image: getValidImageUrl(park.coverImage || park.heroBanner, "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=1200"),
   };
 
   return (

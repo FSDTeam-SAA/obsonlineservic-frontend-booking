@@ -27,6 +27,7 @@ import Link from "next/link";
 import { getFeaturedHolidayParks } from "@/features/holiday-parks/api/holiday-parks.api";
 import { HolidayPark } from "@/features/holiday-parks/types";
 import { HolidayParkCardSkeleton } from "@/features/holiday-parks/components/HolidayParkSkeleton";
+import { getValidImageUrl } from "@/lib/utils";
 
 // Feature amenities icons row
 const amenityIcons = [
@@ -110,10 +111,8 @@ export default function FeaturedHolidayParks({
             ) : (
               parksList.map((item) => {
                 const parkId = item._id;
-                const imageSrc =
-                  item.coverImage ||
-                  item.heroBanner ||
-                  "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=600";
+                const rawImage = item.coverImage || item.heroBanner;
+                const imageSrc = getValidImageUrl(rawImage);
                 const locationText =
                   [item.location?.region, item.location?.country]
                     .filter(Boolean)
@@ -135,7 +134,7 @@ export default function FeaturedHolidayParks({
                         <div className="relative h-[210px] w-full bg-slate-200">
                           <Image
                             src={imageSrc}
-                            alt={item.title || item.name}
+                            alt={item?.title || item?.name}
                             fill
                             className="object-cover"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

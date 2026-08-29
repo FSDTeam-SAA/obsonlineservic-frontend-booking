@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { ShieldCheck } from "lucide-react";
+import { getValidImageUrl } from "@/lib/utils";
 
 // ==========================================
 // 1. JSON DATA CONFIGURATION
@@ -42,8 +43,8 @@ export default function ForestSanctuarySection({
           {/* Left Column: Image with Floating Eco Badge */}
           <div className="lg:col-span-6  relative w-full h-[380px] sm:h-[440px] md:h-[500px] rounded-2xl overflow-hidden shadow-sm">
             <Image
-              src={data.image}
-              alt={data.title}
+              src={getValidImageUrl(data.image, "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=1200")}
+              alt={data.title || "Sanctuary"}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-center"

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Star, MapPin, Home, Euro } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getValidImageUrl } from "@/lib/utils";
 
 export const retreatHeroData = {
   rating: 4.9,
@@ -28,8 +29,8 @@ export default function RetreatHeroBanner({
     <section className="relative w-full h-[480px] sm:h-[540px] md:h-[580px] flex items-center justify-center overflow-hidden font-sans">
       {/* Background Image */}
       <Image
-        src={data.backgroundImage}
-        alt={data.title}
+        src={getValidImageUrl(data.backgroundImage, "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1920")}
+        alt={data.title || "Retreat"}
         fill
         priority
         className="object-cover object-center"

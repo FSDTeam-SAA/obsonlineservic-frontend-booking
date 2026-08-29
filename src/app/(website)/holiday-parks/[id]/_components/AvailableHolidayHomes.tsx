@@ -14,6 +14,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { getValidImageUrl } from "@/lib/utils";
 
 // ==========================================
 // 1. DATA TYPES & JSON DATA
@@ -208,7 +209,7 @@ export default function AvailableHolidayHomes({
                   {/* Top Image Box */}
                   <div className="relative h-[200px] w-full bg-slate-100">
                     <Image
-                      src={home.image}
+                      src={getValidImageUrl(home.image)}
                       alt={home.title}
                       fill
                       className="object-cover"

@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { fetchPopularProperties, fetchProperties } from "@/features/properties/api/properties.api";
 import { Property, PropertyCategory } from "@/features/properties/types/properties.types";
 import { PropertiesGridSkeleton } from "@/features/properties/components/PropertySkeleton";
+import { getValidImageUrl } from "@/lib/utils";
 
 const categoryTabs: PropertyCategory[] = [
   "All Properties",
@@ -116,7 +117,7 @@ export default function PopularHolidayProperties() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {properties.map((property) => {
               const isFav = !!favorites[property._id];
-              const mainImg = property.gallery?.main || "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=600&auto=format&fit=crop";
+              const mainImg = getValidImageUrl(property.gallery?.main);
 
               return (
                 <Card

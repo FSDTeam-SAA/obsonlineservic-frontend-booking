@@ -34,6 +34,7 @@ import { validateOfferCode } from "@/features/offers/api/offers.api";
 import { ValidateOfferResponse } from "@/features/offers/types/offers.types";
 import { api } from "@/lib/api";
 import { Tag, Loader2, CheckCircle2 } from "lucide-react";
+import { getValidImageUrl } from "@/lib/utils";
 import { BookingModal } from "@/features/bookings/components/BookingModal";
 import { BookingConfirmationModal } from "@/features/bookings/components/BookingConfirmationModal";
 import { Booking } from "@/features/bookings/types/bookings.types";
@@ -156,18 +157,22 @@ export default function PropertyDetailsPage() {
     }
   };
 
-  const galleryMain =
-    property.gallery?.main ||
-    "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1200&auto=format&fit=crop";
-  const gallerySide1 =
-    property.gallery?.side1 ||
-    "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=600&auto=format&fit=crop";
-  const gallerySide2 =
-    property.gallery?.side2 ||
-    "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=600&auto=format&fit=crop";
-  const gallerySide3 =
-    property.gallery?.side3 ||
-    "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=600&auto=format&fit=crop";
+  const galleryMain = getValidImageUrl(
+    property.gallery?.main,
+    "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1200&auto=format&fit=crop"
+  );
+  const gallerySide1 = getValidImageUrl(
+    property.gallery?.side1,
+    "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=600&auto=format&fit=crop"
+  );
+  const gallerySide2 = getValidImageUrl(
+    property.gallery?.side2,
+    "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=600&auto=format&fit=crop"
+  );
+  const gallerySide3 = getValidImageUrl(
+    property.gallery?.side3,
+    "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=600&auto=format&fit=crop"
+  );
 
   const specsList = property.specs?.length
     ? property.specs
@@ -594,7 +599,7 @@ export default function PropertyDetailsPage() {
                 <div className="flex items-center gap-3 pt-4 border-t border-slate-100 mt-4">
                   <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 bg-slate-200">
                     <Image
-                      src={review.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop"}
+                      src={getValidImageUrl(review.avatar, "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop")}
                       alt={review.name || "Guest"}
                       fill
                       className="object-cover"
