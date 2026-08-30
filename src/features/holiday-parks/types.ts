@@ -95,3 +95,13 @@ export interface FeaturedHolidayParksResponse {
   message: string;
   data: HolidayPark[];
 }
+
+export interface DestinationItem {
+  id: string;
+  name: string;
+  badgeLocation: string;
+  subLocation?: string;
+  parksCount: number;
+  imageUrl: string;
+}
+

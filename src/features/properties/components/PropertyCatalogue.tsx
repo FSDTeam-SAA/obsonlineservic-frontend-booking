@@ -161,11 +161,10 @@ export function PropertyCatalogue() {
                     setSelectedCategory(tab);
                     setPage(1);
                   }}
-                  className={`text-xs px-3.5 py-2 rounded-lg font-medium transition-all ${
-                    isActive
-                      ? "bg-[#3B3388] text-white shadow-xs"
-                      : "bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900"
-                  }`}
+                  className={`text-xs px-3.5 py-2 rounded-lg font-medium transition-all ${isActive
+                    ? "bg-[#3B3388] text-white shadow-xs"
+                    : "bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900"
+                    }`}
                 >
                   {tab}
                 </button>
@@ -275,11 +274,10 @@ export function PropertyCatalogue() {
                           aria-label="Toggle favorite"
                         >
                           <Heart
-                            className={`w-3.5 h-3.5 transition-colors ${
-                              isFav
-                                ? "fill-red-500 text-red-500"
-                                : "text-slate-400"
-                            }`}
+                            className={`w-3.5 h-3.5 transition-colors ${isFav
+                              ? "fill-red-500 text-red-500"
+                              : "text-slate-400"
+                              }`}
                           />
                         </button>
                       </div>
