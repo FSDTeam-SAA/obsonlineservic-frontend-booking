@@ -41,3 +41,26 @@ export function HolidayParkDetailSkeleton() {
     </div>
   );
 }
+
+export function DestinationCardSkeleton() {
+  return (
+    <div className="relative h-[360px] w-full overflow-hidden rounded-sm bg-slate-200 shadow-xs animate-pulse">
+      <div className="absolute top-3.5 left-3.5 h-6 w-28 bg-slate-300/70 rounded-md" />
+      <div className="absolute bottom-0 left-0 right-0 p-5 space-y-2">
+        <div className="h-3 bg-slate-300/70 rounded w-16" />
+        <div className="h-6 bg-slate-300/80 rounded w-32" />
+      </div>
+    </div>
+  );
+}
+
+export function FeaturedDestinationsGridSkeleton({ count = 5 }: { count?: number }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+      {Array.from({ length: count }).map((_, idx) => (
+        <DestinationCardSkeleton key={idx} />
+      ))}
+    </div>
+  );
+}
+

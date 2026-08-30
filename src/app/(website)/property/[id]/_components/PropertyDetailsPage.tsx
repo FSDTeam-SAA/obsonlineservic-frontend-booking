@@ -40,6 +40,7 @@ import { BookingConfirmationModal } from "@/features/bookings/components/Booking
 import { Booking } from "@/features/bookings/types/bookings.types";
 import { WriteReviewModal } from "@/features/reviews/components/WriteReviewModal";
 import { MessageSquarePlus } from "lucide-react";
+import { GoogleMapPreview } from "@/components/shared/GoogleMapPreview";
 
 export default function PropertyDetailsPage() {
   const params = useParams();
@@ -180,26 +181,26 @@ export default function PropertyDetailsPage() {
   const specsList = property.specs?.length
     ? property.specs
     : [
-        { label: "GUESTS", value: `Up to ${property.guests || 4}` },
-        { label: "BEDROOM", value: `${property.beds || 2} Rooms` },
-        { label: "BATHROOMS", value: `${property.baths || 2} Baths` },
-        { label: "SIZE", value: property.size || "240 m²" },
-        { label: "PARKING", value: property.parking || "Free Private" },
-        { label: "WIFI", value: property.wifi || "Free 24h" },
-      ];
+      { label: "GUESTS", value: `Up to ${property.guests || 4}` },
+      { label: "BEDROOM", value: `${property.beds || 2} Rooms` },
+      { label: "BATHROOMS", value: `${property.baths || 2} Baths` },
+      { label: "SIZE", value: property.size || "240 m²" },
+      { label: "PARKING", value: property.parking || "Free Private" },
+      { label: "WIFI", value: property.wifi || "Free 24h" },
+    ];
 
   const amenitiesList = property.amenities?.length
     ? property.amenities
     : [
-        { name: "Private Sauna" },
-        { name: "Lake View" },
-        { name: "Kitchen" },
-        { name: "Coffee Machine" },
-        { name: "Smart TV" },
-        { name: "Air Conditioning" },
-        { name: "Heating" },
-        { name: "Free Parking" },
-      ];
+      { name: "Private Sauna" },
+      { name: "Lake View" },
+      { name: "Kitchen" },
+      { name: "Coffee Machine" },
+      { name: "Smart TV" },
+      { name: "Air Conditioning" },
+      { name: "Heating" },
+      { name: "Free Parking" },
+    ];
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] py-8 sm:py-12 px-4 sm:px-6 lg:px-8 font-sans text-slate-800">
@@ -325,6 +326,35 @@ export default function PropertyDetailsPage() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Location & Interactive Google Map */}
+            <div className="space-y-4 pt-6 border-t border-slate-200/80">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900">
+                    Location & Surroundings
+                  </h2>
+                  <p className="text-xs text-slate-500">
+                    {property.location || "Veluwe, Netherlands"}
+                  </p>
+                </div>
+                {typeof property.holidayPark === "object" && (property.holidayPark as any)?.name && (
+                  <span className="text-xs font-semibold text-[#3B3388] bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                    Part of {(property.holidayPark as any)?.name || (property.holidayPark as any)?.title}
+                  </span>
+                )}
+              </div>
+
+              <GoogleMapPreview
+                locationName={property.title}
+                city={typeof property.holidayPark === "object" ? (property.holidayPark as any)?.location?.city : undefined}
+                country={property.country || "Netherlands"}
+                formattedAddress={property.location}
+                latitude={typeof property.holidayPark === "object" ? (property.holidayPark as any)?.location?.latitude : undefined}
+                longitude={typeof property.holidayPark === "object" ? (property.holidayPark as any)?.location?.longitude : undefined}
+                height="h-[340px]"
+              />
             </div>
           </div>
 
@@ -500,11 +530,10 @@ export default function PropertyDetailsPage() {
                 <Button
                   variant="outline"
                   onClick={() => setIsSaved(!isSaved)}
-                  className={`w-full h-11 border-slate-200 text-xs font-semibold rounded-xl transition-colors ${
-                    isSaved
-                      ? "bg-slate-50 text-[#3B3388] border-[#3B3388]"
-                      : "text-slate-600 hover:bg-slate-50"
-                  }`}
+                  className={`w-full h-11 border-slate-200 text-xs font-semibold rounded-xl transition-colors ${isSaved
+                    ? "bg-slate-50 text-[#3B3388] border-[#3B3388]"
+                    : "text-slate-600 hover:bg-slate-50"
+                    }`}
                 >
                   {isSaved ? "Saved to Favorites" : "Save Property"}
                 </Button>
@@ -603,11 +632,10 @@ export default function PropertyDetailsPage() {
                     {Array.from({ length: 5 }).map((_, idx) => (
                       <Star
                         key={idx}
-                        className={`w-3.5 h-3.5 ${
-                          idx < (review.rating || 5)
-                            ? "fill-[#F59E0B] text-[#F59E0B]"
-                            : "fill-slate-200 text-slate-200"
-                        }`}
+                        className={`w-3.5 h-3.5 ${idx < (review.rating || 5)
+                          ? "fill-[#F59E0B] text-[#F59E0B]"
+                          : "fill-slate-200 text-slate-200"
+                          }`}
                       />
                     ))}
                   </div>
