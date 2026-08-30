@@ -254,7 +254,11 @@ export function OffersPageClient() {
     }
   };
 
-  // Strictly partition dynamic properties so Featured and Special Packages never duplicate properties
+  // Strictly partition API offers by displayPlacement choice
+  const featuredApiOffers = apiOffers.filter((o) => o.displayPlacement !== "special_packages");
+  const specialPackageApiOffers = apiOffers.filter((o) => o.displayPlacement === "special_packages");
+
+  // Strictly partition dynamic properties as fallback
   const featuredProperties = dynamicProperties.slice(0, 3);
   const specialPackagesProperties = dynamicProperties.slice(3, 9);
 
@@ -316,39 +320,41 @@ export function OffersPageClient() {
 
           <div className="space-y-8">
             {FEATURED_SEASONAL_FALLBACKS.map((fallback, idx) => {
+              const apiOffer = featuredApiOffers[idx];
               const dynProp = featuredProperties[idx];
               const dynPark = dynamicParks[idx];
-              const apiOffer = apiOffers[idx];
 
-              const title = dynProp?.title || dynPark?.title || apiOffer?.offerName || fallback.title;
-              const description =
-                dynProp?.description || dynPark?.shortDescription || apiOffer?.description || fallback.description;
+              // Check if offer has populated properties or parks attached
+              const offerProp = apiOffer?.applicableProperties?.find((p) => typeof p === "object") as any;
+              const offerPark = apiOffer?.applicableParks?.find((p) => typeof p === "object") as any;
+
+              const title = apiOffer?.offerName || offerProp?.title || offerPark?.title || dynProp?.title || dynPark?.title || fallback.title;
+              const category = offerProp?.category || dynProp?.category || dynPark?.location?.country || fallback.category;
+              const description = apiOffer?.description || offerProp?.description || dynProp?.description || dynPark?.shortDescription || fallback.description;
               const code = apiOffer?.offerCode || fallback.code;
-              const discountText =
-                dynProp?.pricePerNight
-                  ? `€${dynProp.pricePerNight}`
-                  : dynPark?.startingPrice
-                    ? `€${dynPark.startingPrice}`
-                    : apiOffer?.discountValue || fallback.price;
 
-              const imageSrc = getValidImageUrl(
-                dynProp?.gallery?.main || dynPark?.coverImage || fallback.image
-              );
+              const rawImg = offerProp?.gallery?.[0] || offerPark?.coverImage || dynProp?.gallery?.main || dynPark?.coverImage || fallback.image;
+              const imageSrc = getValidImageUrl(rawImg);
 
-              const perks: string[] =
-                dynProp?.amenities && dynProp.amenities.length >= 2
+              const rawPrice = offerProp?.pricePerNight ? `€${offerProp.pricePerNight}` : offerPark?.startingPrice ? `€${offerPark.startingPrice}` : apiOffer?.discountValue ? apiOffer.discountValue : dynProp?.pricePerNight ? `€${dynProp.pricePerNight}` : fallback.price;
+
+              const perks: string[] = offerProp?.amenities?.length >= 2
+                ? offerProp.amenities.slice(0, 3).map((a: any) => typeof a === "object" ? a.name : a)
+                : dynProp?.amenities && dynProp.amenities.length >= 2
                   ? dynProp.amenities.slice(0, 3).map((a) => a.name)
                   : fallback.perks;
 
-              const targetLink = dynProp?._id
-                ? `/property/${dynProp._id}`
-                : dynPark?._id
-                  ? `/holiday-parks/${dynPark._id}`
-                  : `/search?offerCode=${code}`;
+              const targetLink = offerProp?._id
+                ? `/property/${offerProp._id}`
+                : offerPark?._id
+                  ? `/holiday-parks/${offerPark._id}`
+                  : dynProp?._id
+                    ? `/property/${dynProp._id}`
+                    : `/search?offerCode=${code}`;
 
               return (
                 <div
-                  key={fallback.id}
+                  key={apiOffer?._id || fallback.id}
                   className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 group"
                 >
                   {/* Left Half: Image */}
@@ -370,7 +376,7 @@ export function OffersPageClient() {
                   <div className="lg:col-span-6 p-8 lg:p-10 flex flex-col justify-between space-y-6">
                     <div className="space-y-3">
                       <span className="text-xs font-extrabold text-indigo-600 uppercase tracking-widest block">
-                        {dynProp?.category || dynPark?.location?.country || fallback.category}
+                        {category}
                       </span>
                       <h3 className="text-2xl font-bold text-slate-900 group-hover:text-[#30277a] transition-colors leading-snug">
                         {title}
@@ -415,7 +421,7 @@ export function OffersPageClient() {
                         </div>
                         <div className="flex items-baseline gap-1">
                           <span className="text-xs text-slate-400 font-medium">Starting from</span>
-                          <span className="text-2xl font-black text-slate-900">{discountText}</span>
+                          <span className="text-2xl font-black text-slate-900">{rawPrice}</span>
                           <span className="text-xs text-slate-500 font-medium">{fallback.period}</span>
                         </div>
                       </div>
@@ -480,39 +486,41 @@ export function OffersPageClient() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SPECIAL_PACKAGES_FALLBACKS.map((fallback, idx) => {
-              // Use distinct property item from specialPackagesProperties (indices 3..8)
+              const apiOffer = specialPackageApiOffers[idx];
               const dynProp = specialPackagesProperties[idx];
-              // Use distinct holiday park item if available
               const parkIdx = idx + 3;
               const dynPark = dynamicParks[parkIdx];
 
-              const title = dynProp?.title || dynPark?.title || fallback.title;
-              const description =
-                dynProp?.description || dynPark?.shortDescription || fallback.description;
-              const priceText = dynProp?.pricePerNight
-                ? `€${dynProp.pricePerNight}`
-                : dynPark?.startingPrice
-                  ? `€${dynPark.startingPrice}`
-                  : fallback.price;
+              // Check if offer has populated properties or parks attached
+              const offerProp = apiOffer?.applicableProperties?.find((p) => typeof p === "object") as any;
+              const offerPark = apiOffer?.applicableParks?.find((p) => typeof p === "object") as any;
 
-              const imageSrc = getValidImageUrl(
-                dynProp?.gallery?.main || dynPark?.coverImage || fallback.image
-              );
+              const title = apiOffer?.offerName || offerProp?.title || offerPark?.title || dynProp?.title || dynPark?.title || fallback.title;
+              const category = offerProp?.category || dynProp?.category || fallback.badge;
+              const description = apiOffer?.description || offerProp?.description || dynProp?.description || dynPark?.shortDescription || fallback.description;
+              const priceText = offerProp?.pricePerNight ? `€${offerProp.pricePerNight}` : offerPark?.startingPrice ? `€${offerPark.startingPrice}` : apiOffer?.discountValue ? apiOffer.discountValue : dynProp?.pricePerNight ? `€${dynProp.pricePerNight}` : fallback.price;
+              const code = apiOffer?.offerCode || fallback.code;
 
-              const perks: string[] =
-                dynProp?.amenities && dynProp.amenities.length >= 2
+              const rawImg = offerProp?.gallery?.[0] || offerPark?.coverImage || dynProp?.gallery?.main || dynPark?.coverImage || fallback.image;
+              const imageSrc = getValidImageUrl(rawImg);
+
+              const perks: string[] = offerProp?.amenities?.length >= 2
+                ? offerProp.amenities.slice(0, 3).map((a: any) => typeof a === "object" ? a.name : a)
+                : dynProp?.amenities && dynProp.amenities.length >= 2
                   ? dynProp.amenities.slice(0, 3).map((a) => a.name)
                   : fallback.perks;
 
-              const targetLink = dynProp?._id
-                ? `/property/${dynProp._id}`
-                : dynPark?._id
-                  ? `/holiday-parks/${dynPark._id}`
-                  : `/search?offerCode=${fallback.code}`;
+              const targetLink = offerProp?._id
+                ? `/property/${offerProp._id}`
+                : offerPark?._id
+                  ? `/holiday-parks/${offerPark._id}`
+                  : dynProp?._id
+                    ? `/property/${dynProp._id}`
+                    : `/search?offerCode=${code}`;
 
               return (
                 <div
-                  key={fallback.id}
+                  key={apiOffer?._id || fallback.id}
                   className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
                 >
                   {/* Image Header */}
@@ -525,7 +533,7 @@ export function OffersPageClient() {
                     />
                     <div className="absolute top-4 left-4 z-10">
                       <span className="px-3 py-1 bg-white/90 backdrop-blur-md text-slate-900 text-[10px] font-extrabold uppercase tracking-wider rounded-lg border border-white/50 shadow-sm">
-                        {dynProp?.category || fallback.badge}
+                        {category}
                       </span>
                     </div>
                   </div>
