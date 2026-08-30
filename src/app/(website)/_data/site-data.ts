@@ -1,8 +1,8 @@
 export const primaryNavigation = [
   { label: "Holiday Parks", href: "/holiday-parks" },
-  { label: "Properties", href: "/#properties" },
-  { label: "Offers", href: "/#offers" },
-  { label: "About us", href: "/#about-us" },
+  { label: "Properties", href: "/properties" },
+  { label: "Search", href: "/search" },
+  { label: "Offers", href: "/offers" },
   { label: "Contact", href: "/#contact" },
 ] as const;
 

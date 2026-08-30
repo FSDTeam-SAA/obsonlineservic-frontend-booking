@@ -39,7 +39,9 @@ export function PropertyCatalogue() {
   const [selectedCategory, setSelectedCategory] = useState<string>(
     searchParams?.get("category") || "All Properties"
   );
-  const [guests, setGuests] = useState<number | undefined>(undefined);
+  const [guests, setGuests] = useState<number | undefined>(
+    searchParams?.get("guests") ? Number(searchParams.get("guests")) : undefined
+  );
   const [page, setPage] = useState(1);
   const [limit] = useState(8);
 
@@ -48,6 +50,17 @@ export function PropertyCatalogue() {
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(true);
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+
+  // Sync state when URL searchParams update
+  useEffect(() => {
+    const qSearch = searchParams?.get("search") || "";
+    const qCategory = searchParams?.get("category") || "All Properties";
+    const qGuests = searchParams?.get("guests") ? Number(searchParams.get("guests")) : undefined;
+
+    setSearch(qSearch);
+    setSelectedCategory(qCategory);
+    setGuests(qGuests);
+  }, [searchParams]);
 
   useEffect(() => {
     let isMounted = true;
@@ -91,6 +104,7 @@ export function PropertyCatalogue() {
     setSelectedCategory("All Properties");
     setGuests(undefined);
     setPage(1);
+    router.replace("/properties", { scroll: false });
   };
 
   return (
@@ -118,9 +132,22 @@ export function PropertyCatalogue() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder="Search by title, location or keywords..."
-              className="w-full h-11 pl-10 pr-4 rounded-lg border border-slate-200 bg-slate-50 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#3B3388] transition-colors"
+              placeholder="Search by title, location, resort, or country..."
+              className="w-full h-11 pl-10 pr-9 rounded-lg border border-slate-200 bg-slate-50 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#3B3388] transition-colors"
             />
+            {search && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setPage(1);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold p-1"
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
           {/* Category Pills */}

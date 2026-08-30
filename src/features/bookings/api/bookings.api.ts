@@ -11,7 +11,8 @@ import {
  */
 export async function createBooking(dto: CreateBookingDto): Promise<Booking> {
   const response = await api.post("/bookings", dto);
-  return response.data;
+  const body = response.data;
+  return body?.data !== undefined ? body.data : body;
 }
 
 /**
@@ -19,7 +20,8 @@ export async function createBooking(dto: CreateBookingDto): Promise<Booking> {
  */
 export async function createAuthBooking(dto: CreateBookingDto): Promise<Booking> {
   const response = await api.post("/bookings/auth-booking", dto);
-  return response.data;
+  const body = response.data;
+  return body?.data !== undefined ? body.data : body;
 }
 
 /**
@@ -27,7 +29,16 @@ export async function createAuthBooking(dto: CreateBookingDto): Promise<Booking>
  */
 export async function fetchMyBookings(): Promise<Booking[]> {
   const response = await api.get("/bookings/my-bookings");
-  return response.data;
+  const body = response.data;
+  const rawData = body?.data !== undefined ? body.data : body;
+
+  if (Array.isArray(rawData)) {
+    return rawData;
+  }
+  if (rawData && typeof rawData === "object" && Array.isArray(rawData.items)) {
+    return rawData.items;
+  }
+  return [];
 }
 
 /**
@@ -35,7 +46,8 @@ export async function fetchMyBookings(): Promise<Booking[]> {
  */
 export async function fetchBookingById(id: string): Promise<Booking> {
   const response = await api.get(`/bookings/${id}`);
-  return response.data;
+  const body = response.data;
+  return body?.data !== undefined ? body.data : body;
 }
 
 /**
@@ -43,7 +55,8 @@ export async function fetchBookingById(id: string): Promise<Booking> {
  */
 export async function cancelBooking(id: string): Promise<Booking> {
   const response = await api.delete(`/bookings/${id}/cancel`);
-  return response.data;
+  const body = response.data;
+  return body?.data !== undefined ? body.data : body;
 }
 
 /**
@@ -53,5 +66,6 @@ export async function validateOfferCode(
   dto: ValidateOfferDto
 ): Promise<ValidateOfferResponse> {
   const response = await api.post("/offers/validate", dto);
-  return response.data;
+  const body = response.data;
+  return body?.data !== undefined ? body.data : body;
 }

@@ -27,6 +27,26 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "127.0.0.1",
       },
+      {
+        protocol: "https",
+        hostname: "www.lif.cc",
+      },
+      {
+        protocol: "https",
+        hostname: "www.mad.biz",
+      },
+      {
+        protocol: "https",
+        hostname: "www.horumyjygevi.me",
+      },
+      {
+        protocol: "https",
+        hostname: "www.besiqyfe.us",
+      },
+      {
+        protocol: "https",
+        hostname: "www.alvutdap.com",
+      },
     ],
   },
 };
