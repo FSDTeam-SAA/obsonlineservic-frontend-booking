@@ -93,7 +93,7 @@ export default function NewsletterBanner({
       <div className="absolute inset-0 bg-black/75 backdrop-brightness-75" />
 
       {/* Content Container */}
-      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 py-16 text-center text-white flex flex-col items-center">
+      <div className="relative z-10 w-full  mx-auto px-4 sm:px-6 py-16 text-center text-white flex flex-col items-center">
         {/* Main Title */}
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white mb-3">
           {data.title}

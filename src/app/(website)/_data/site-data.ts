@@ -3,7 +3,7 @@ export const primaryNavigation = [
   { label: "Properties", href: "/properties" },
   { label: "Search", href: "/search" },
   { label: "Offers", href: "/offers" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const footerLinks = {

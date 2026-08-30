@@ -263,7 +263,7 @@ export function OffersPageClient() {
       {/* 1. HERO SECTION */}
       <section className="relative w-full h-[520px] md:h-[600px] flex items-center justify-center overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=2000&auto=format&fit=crop"
+          src="/images/offer-hero.png"
           alt="Luxury Resort Background"
           fill
           priority
@@ -328,8 +328,8 @@ export function OffersPageClient() {
                 dynProp?.pricePerNight
                   ? `€${dynProp.pricePerNight}`
                   : dynPark?.startingPrice
-                  ? `€${dynPark.startingPrice}`
-                  : apiOffer?.discountValue || fallback.price;
+                    ? `€${dynPark.startingPrice}`
+                    : apiOffer?.discountValue || fallback.price;
 
               const imageSrc = getValidImageUrl(
                 dynProp?.gallery?.main || dynPark?.coverImage || fallback.image
@@ -343,8 +343,8 @@ export function OffersPageClient() {
               const targetLink = dynProp?._id
                 ? `/property/${dynProp._id}`
                 : dynPark?._id
-                ? `/holiday-parks/${dynPark._id}`
-                : `/search?offerCode=${code}`;
+                  ? `/holiday-parks/${dynPark._id}`
+                  : `/search?offerCode=${code}`;
 
               return (
                 <div
@@ -492,8 +492,8 @@ export function OffersPageClient() {
               const priceText = dynProp?.pricePerNight
                 ? `€${dynProp.pricePerNight}`
                 : dynPark?.startingPrice
-                ? `€${dynPark.startingPrice}`
-                : fallback.price;
+                  ? `€${dynPark.startingPrice}`
+                  : fallback.price;
 
               const imageSrc = getValidImageUrl(
                 dynProp?.gallery?.main || dynPark?.coverImage || fallback.image
@@ -507,8 +507,8 @@ export function OffersPageClient() {
               const targetLink = dynProp?._id
                 ? `/property/${dynProp._id}`
                 : dynPark?._id
-                ? `/holiday-parks/${dynPark._id}`
-                : `/search?offerCode=${fallback.code}`;
+                  ? `/holiday-parks/${dynPark._id}`
+                  : `/search?offerCode=${fallback.code}`;
 
               return (
                 <div
