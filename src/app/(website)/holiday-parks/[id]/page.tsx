@@ -105,7 +105,7 @@ export default function HolidayParkDetailPage({
         <ForestSanctuarySection data={sanctuaryData} />
       </Reveal>
       <Reveal delay={40}>
-        <AvailableHolidayHomes />
+        <AvailableHolidayHomes parkId={parkId} />
       </Reveal>
       <Reveal delay={40}>
         <HolidayExperiences />

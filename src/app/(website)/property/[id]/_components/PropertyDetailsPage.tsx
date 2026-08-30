@@ -38,6 +38,8 @@ import { getValidImageUrl } from "@/lib/utils";
 import { BookingModal } from "@/features/bookings/components/BookingModal";
 import { BookingConfirmationModal } from "@/features/bookings/components/BookingConfirmationModal";
 import { Booking } from "@/features/bookings/types/bookings.types";
+import { WriteReviewModal } from "@/features/reviews/components/WriteReviewModal";
+import { MessageSquarePlus } from "lucide-react";
 
 export default function PropertyDetailsPage() {
   const params = useParams();
@@ -56,6 +58,7 @@ export default function PropertyDetailsPage() {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
 
   // Promo / Offer Code state
   const [promoCodeInput, setPromoCodeInput] = useState("");
@@ -534,20 +537,38 @@ export default function PropertyDetailsPage() {
 
         {/* BOTTOM SECTION: REVIEWS */}
         <div className="space-y-6 pt-6 border-t border-slate-200/70">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-xl font-bold text-slate-900">
-              What Our Guests Say
-            </h2>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="space-y-1">
+              <h2 className="text-xl font-bold text-slate-900">
+                What Our Guests Say
+              </h2>
+              <p className="text-xs text-slate-500">
+                Verified reviews from guests who experienced staying at this property.
+              </p>
+            </div>
 
-            <div className="flex items-center gap-1.5 border border-slate-200 rounded-md px-2.5 py-1 text-xs text-slate-600 bg-white shadow-2xs">
-              <Star className="w-3.5 h-3.5 fill-[#F59E0B] text-[#F59E0B]" />
-              <span className="font-bold text-slate-800">{property.rating || 4.9}</span>
-              <span className="text-slate-400">{reviews.length > 0 ? `${reviews.length} reviews` : "1,248 verified reviews"}</span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-600 bg-white shadow-2xs">
+                <Star className="w-4 h-4 fill-[#F59E0B] text-[#F59E0B]" />
+                <span className="font-bold text-slate-800">{property.rating || 4.9}</span>
+                <span className="text-slate-400">
+                  {reviews.length > 0 ? `(${reviews.length} reviews)` : "(1,248 reviews)"}
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsWriteReviewOpen(true)}
+                className="h-9 px-4 bg-[#3B3388] hover:bg-[#2F296D] text-white font-semibold text-xs rounded-lg shadow-sm transition-colors cursor-pointer flex items-center gap-1.5"
+              >
+                <MessageSquarePlus className="w-3.5 h-3.5" />
+                Write a Review
+              </button>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {(reviews.length > 0 ? reviews.slice(0, 3) : [
+            {(reviews.length > 0 ? reviews.slice(0, 6) : [
               {
                 id: "1",
                 rating: 5,
@@ -619,6 +640,20 @@ export default function PropertyDetailsPage() {
           </div>
         </div>
       </div>
+
+      {/* Write Review Modal */}
+      {isWriteReviewOpen && (
+        <WriteReviewModal
+          propertyId={property._id}
+          propertyTitle={property.title}
+          holidayParkId={typeof property.holidayPark === "string" ? property.holidayPark : (property.holidayPark as any)?._id}
+          isOpen={isWriteReviewOpen}
+          onClose={() => setIsWriteReviewOpen(false)}
+          onSuccess={(newReview) => {
+            setReviews((prev) => [newReview, ...prev]);
+          }}
+        />
+      )}
 
       {/* Booking Modal */}
       {isBookingModalOpen && (

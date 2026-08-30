@@ -25,3 +25,16 @@ export async function getHolidayParkById(id: string): Promise<HolidayPark> {
   const response = await api.get<SingleHolidayParkResponse>(`/holiday-parks/${id}`);
   return response.data.data;
 }
+
+export async function getHolidayParkProperties(id: string, params?: Record<string, any>): Promise<any> {
+  try {
+    const response = await api.get(`/holiday-parks/${id}/properties`, { params });
+    return response.data;
+  } catch (err) {
+    console.warn("Direct park properties API failed, falling back to /properties:", err);
+    const response = await api.get("/properties", {
+      params: { ...params, holidayPark: id },
+    });
+    return response.data;
+  }
+}
